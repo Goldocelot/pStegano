@@ -14,7 +14,7 @@ import utils.BufferedImageUtil;
 * @version 0.1
 * @since   19/11/2020
 */
-public class SteganoEncoder implements iSteganoConstante{
+public class SteganoEncoder {
 	
 	/**
 	* Encode un message stegano dans la copie d'une image.
@@ -61,6 +61,7 @@ public class SteganoEncoder implements iSteganoConstante{
 		loop: for(int i = 0; i < outputImage.getWidth(); i++) {
 			for(int j = 0; j < outputImage.getHeight(); j++) {
 				if(count < bits.length) {
+					System.out.println("encoder: "+i+":"+j);
 					pixel = outputImage.getRGB(i, j);
 					pixOut = (pixel & 0xFFFFFFFE) | (bits[count++] ? 1 : 0);
 					
