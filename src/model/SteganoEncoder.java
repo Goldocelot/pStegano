@@ -1,8 +1,6 @@
 package model;
 
 import java.awt.image.BufferedImage;
-import java.util.BitSet;
-
 import utils.BufferedImageUtil;
 
 
@@ -26,47 +24,45 @@ public class SteganoEncoder implements iSteganoConstante{
 	*/
 	public static BufferedImage encode(BufferedImage bufferedImage, String msg) {
 		String message = iSteganoConstante.encodedtag + msg.length() + iSteganoConstante.separator + msg; 
+		System.out.println(message);
 		
-		BitSet bits = fromStringToBitSet(message);	
+		boolean[] bits = fromStringToBitSet(message);	
 		BufferedImage copiedImage = BufferedImageUtil.deepCopy(bufferedImage);
 		
 		return writeBitSetIntoBufferedImage(copiedImage, bits);
 	}
 	
 	/**
-	* Renvoie un BitSet contenant le message sous forme binaire.
+	* Renvoie un boolean[] contenant le message sous forme binaire.
 	* @param message  le message à convertir
-	* @return Un BitSet créé sur base du String
+	* @return Un boolean[] créé sur base du String
 	*/
-	private static BitSet fromStringToBitSet(String message) {
-		BitSet bits = new BitSet(message.length()*8);
+	private static boolean[] fromStringToBitSet(String message) {
+		boolean[] bits = new boolean[message.length()*8];
 		
 		for(int i=0 ; i<message.length() ; i++) {
 			char c = message.charAt(i);
 			for(int j = 0 ; j < 8 ; j++) {
-				int index = 8*i+j;
-				boolean bit = ((c >> 7) & 0b1) == 1;
-				bits.set(index, bit);
+				bits[8*i+j] = ((c >> 7-j) & 0b1) == 1;
 			}
 		}
-		
 		return bits;
 	}
 	
 	/**
-	* Encode un bitSet sur le LSB de l'alphachannel des pixels d'une BufferedImage
+	* Encode un boolean[] sur le LSB de l'alphachannel des pixels d'une BufferedImage
 	* @param outputImage Image encodée
-	* @param bits BitSet a écrire
+	* @param bits boolean[] a écrire
 	* @return Copie encodée de la bufferedImage donnée en argument
 	*/
-	private static BufferedImage writeBitSetIntoBufferedImage(BufferedImage outputImage, BitSet bits) {
+	private static BufferedImage writeBitSetIntoBufferedImage(BufferedImage outputImage, boolean[] bits) {
 
 		int pixel, pixOut, count = 0;;
 		loop: for(int i = 0; i < outputImage.getWidth(); i++) {
 			for(int j = 0; j < outputImage.getHeight(); j++) {
-				if(count < bits.size()) {
+				if(count < bits.length) {
 					pixel = outputImage.getRGB(i, j);
-					pixOut = (pixel & 0xFFFFFFFE) | (bits.get(count++) ? 1 : 0);
+					pixOut = (pixel & 0xFFFFFFFE) | (bits[count++] ? 1 : 0);
 					
 					outputImage.setRGB(i, j, pixOut);
 					
