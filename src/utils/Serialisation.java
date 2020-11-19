@@ -19,7 +19,7 @@ public class Serialisation {
 	* @param fileName nom du fichier d'où provient l'image
 	* @return BufferedImage de l'image chargée (null si aucune image trouvée)
 	*/
-	public BufferedImage loadImageFromFile(String fileName) {
+	public static BufferedImage loadImageFromFile(String fileName) {
 		try {
 			return ImageIO.read(new File(fileName));
 		} catch (IOException e) {
@@ -34,7 +34,7 @@ public class Serialisation {
 	* @param fileName nom du fichier dans lequel sauvegarder l'image
 	* @return true = sauvegarde réussie<br>false = échec de la sauvegarde
 	*/
-	public boolean saveImageInFile(BufferedImage image, String fileName) {
+	public static boolean saveImageInFile(BufferedImage image, String fileName) {
 		try {
 			return ImageIO.write(image, "png", new File(fileName));	 
 		} catch (IOException e) {
