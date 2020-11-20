@@ -12,11 +12,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import model.SteganoDecoder;
+import utils.Serialisation;
 import utils.UtilsValidation;
 
 public class DecryptBp extends BorderPane{
 
-	
+
 
 	private Button btnFileChooser;
 	private Label lblToString;
@@ -27,7 +29,7 @@ public class DecryptBp extends BorderPane{
 
 	private double x = 400;
 	private double y = 600;
-	
+
 	private File file ;
 
 	public DecryptBp(Stage stage) {
@@ -39,13 +41,13 @@ public class DecryptBp extends BorderPane{
 		hbbtn.getChildren().add(getBtnFileChooser());
 		hbbtn.setPadding(new Insets(5,0,0,0));
 		this.setTop(hbbtn);
-		
+
 		HBox hbtxt = new HBox();
 		hbtxt.setAlignment(Pos.BOTTOM_CENTER);
 		hbtxt.setPadding(new Insets(0,0,10,0));
 		hbtxt.getChildren().add(getLblToString());
 		this.setCenter(hbtxt);
-		
+
 		HBox hbbtnbot = new HBox();
 		hbbtnbot.setAlignment(Pos.CENTER);
 		hbbtnbot.getChildren().addAll(getBtnDone(),getBtnBack());
@@ -65,6 +67,12 @@ public class DecryptBp extends BorderPane{
 			btnDone.setOnMouseClicked(e->{
 				//decripte ici 
 				//use file
+				if(file!=null) {	
+					SteganoDecoder decoder = new SteganoDecoder(Serialisation.loadImageFromFile(file));
+					getLblToString().setText(decoder.decode());
+					
+				}
+
 			});
 		}
 		return btnDone;
@@ -87,13 +95,10 @@ public class DecryptBp extends BorderPane{
 			//event mouse click
 			btnFileChooser.setOnMouseClicked(e->{
 				FileChooser chooser = new FileChooser();
-				chooser.getExtensionFilters().addAll(new ExtensionFilter("Json", "*.json"));
+				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));
 				file = chooser.showOpenDialog(this.getScene().getWindow());
-				
-				if(file==null) {
-					UtilsValidation.popupBuild("Err : File null", 200, 100);
-				}
-				
+
+
 			});
 		}
 		return btnFileChooser;

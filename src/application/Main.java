@@ -28,11 +28,6 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		//launch(args);
-		SteganoEncoder encoder = new SteganoEncoder(Serialisation.loadImageFromFile(new File("30x10.png")));
-		Serialisation.saveImageInFile(encoder.encode("Yep"),new File("stegano30x10.png"));
-		
-		SteganoDecoder decoder = new SteganoDecoder(Serialisation.loadImageFromFile(new File("stegano30x10.png")));
-		System.out.println(decoder.decode());
+		launch(args);
 	}
 }

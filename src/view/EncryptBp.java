@@ -13,7 +13,8 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import utils.UtilsValidation;
+import model.SteganoEncoder;
+import utils.Serialisation;
 
 public class EncryptBp extends BorderPane{
 
@@ -80,6 +81,19 @@ public class EncryptBp extends BorderPane{
 			btnDone.setOnMouseClicked(e->{
 				//cripte ici 
 				//use file
+				if(file==null)return;
+				if(getTxtText().getText().equals("")) return;
+				
+				FileChooser chooser = new FileChooser();
+				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));
+				File fileSave = chooser.showSaveDialog(this.getScene().getWindow());
+				
+				if(fileSave!=null) {	
+					
+					SteganoEncoder encoder = new SteganoEncoder(Serialisation.loadImageFromFile(file));
+					Serialisation.saveImageInFile(encoder.encode(getTxtText().getText()),fileSave);
+	
+				}
 			});
 		}
 		return btnDone;
@@ -102,12 +116,8 @@ public class EncryptBp extends BorderPane{
 			//event mouse click
 			btnFileChooser.setOnMouseClicked(e->{
 				FileChooser chooser = new FileChooser();
-				chooser.getExtensionFilters().addAll(new ExtensionFilter("Json", "*.json"));
+				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));
 				file = chooser.showOpenDialog(this.getScene().getWindow());
-				
-				if(file==null) {
-					UtilsValidation.popupBuild("Err : File null", 200, 100);
-				}
 				
 			});
 		}
