@@ -138,8 +138,9 @@ public class DecryptBp extends BorderPane{
 
 	public TextArea getLblToString() {
 		if(lblToString == null) {
-			lblToString = new TextArea("EnCryp Titon");
+			lblToString = new TextArea();
 			lblToString.setId("lblTitleLight");
+			lblToString.setEditable(false);
 			//lblToString.setAlignment(Pos.CENTER);
 			//UtilsValidation.setFontSize(lblToString, 25, (int)(y/3));
 			lblToString.setFont(Font.font(15));
@@ -160,7 +161,7 @@ public class DecryptBp extends BorderPane{
 			lblFileIsLoad.setAlignment(Pos.CENTER_RIGHT);
 			lblFileIsLoad.setMaxSize(x*0.95,y/9);
 			lblFileIsLoad.setMinSize(x*0.95,y/9);
-			lblFileIsLoad.setId("txtFieldBlack");
+			lblFileIsLoad.setId("lblTitleLight");
 			lblFileIsLoad.setFont(Font.font(15));
 		}
 		return lblFileIsLoad;

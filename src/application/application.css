@@ -19,7 +19,7 @@
 }
 #lblTitleLight{
     -fx-font-family: "Comic Sans MS";
-    -fx-text-fill: #d1d1d1;
+    -fx-text-fill: orange;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
     -fx-opacity: 1;
 }

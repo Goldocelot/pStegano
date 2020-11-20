@@ -183,7 +183,7 @@ public class EncryptBp extends BorderPane{
 			lblNbofChar.setAlignment(Pos.CENTER_RIGHT);
 			lblNbofChar.setMaxSize(x*0.95,y/9);
 			lblNbofChar.setMinSize(x*0.95,y/9);
-			lblNbofChar.setId("txtFieldBlack");
+			lblNbofChar.setId("lblTitleLight");
 			lblNbofChar.setFont(Font.font(15));
 		}
 		return lblNbofChar;
