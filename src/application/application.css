@@ -54,3 +54,14 @@
     -fx-fill: white;
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
+
+
+/***** */
+.text-area .content{
+      -fx-background-color: black;
+}
+.text-area:focused {
+ -fx-background-color:  orange;
+ -fx-border-color: rgba(119,110,0,0.5);
+}
+  

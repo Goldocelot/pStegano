@@ -7,21 +7,24 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import model.SteganoDecoder;
 import utils.Serialisation;
-import utils.UtilsValidation;
 
 public class DecryptBp extends BorderPane{
 
 
 
 	private Button btnFileChooser;
-	private Label lblToString;
+	private Label lblFileIsLoad;
+	private TextArea lblToString;
 	private Button btnDone;
 	private Button btnBack;
 
@@ -36,11 +39,11 @@ public class DecryptBp extends BorderPane{
 		this.stage=stage;
 		this.setId("FondNoir");
 
-		HBox hbbtn = new HBox();
-		hbbtn.setAlignment(Pos.CENTER);
-		hbbtn.getChildren().add(getBtnFileChooser());
-		hbbtn.setPadding(new Insets(5,0,0,0));
-		this.setTop(hbbtn);
+		VBox vbTop = new VBox();
+		vbTop.setAlignment(Pos.CENTER);
+		vbTop.getChildren().addAll(getBtnFileChooser(),getLblFileIsLoad());
+		vbTop.setPadding(new Insets(5,0,0,0));
+		this.setTop(vbTop);
 
 		HBox hbtxt = new HBox();
 		hbtxt.setAlignment(Pos.BOTTOM_CENTER);
@@ -57,7 +60,7 @@ public class DecryptBp extends BorderPane{
 
 	public Button getBtnDone() {
 		if(btnDone == null) {
-			btnDone = new Button("Done");
+			btnDone = new Button("Decrypt");
 			btnDone.setAlignment(Pos.CENTER);
 			btnDone.setMaxSize(x*0.79,y/8);
 			btnDone.setMinSize(x*0.79,y/8);
@@ -98,7 +101,10 @@ public class DecryptBp extends BorderPane{
 				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));
 				file = chooser.showOpenDialog(this.getScene().getWindow());
 
-
+				if(file != null) {
+					getLblFileIsLoad().setText("file is available to use");
+				}
+				
 			});
 		}
 		return btnFileChooser;
@@ -130,20 +136,38 @@ public class DecryptBp extends BorderPane{
 		this.btnBack = btnBack;
 	}
 
-	public Label getLblToString() {
+	public TextArea getLblToString() {
 		if(lblToString == null) {
-			lblToString = new Label("EnCryp Titon");
+			lblToString = new TextArea("EnCryp Titon");
 			lblToString.setId("lblTitleLight");
-			lblToString.setAlignment(Pos.CENTER);
-			UtilsValidation.setFontSize(lblToString, 25, (int)(y/3));
-			lblToString.setMaxSize(x,y/3);
-			lblToString.setMinSize(x,y/3);
+			//lblToString.setAlignment(Pos.CENTER);
+			//UtilsValidation.setFontSize(lblToString, 25, (int)(y/3));
+			lblToString.setFont(Font.font(15));
+			lblToString.setMaxSize(x*0.95,y*0.30);
+			lblToString.setMinSize(x*0.95,y*0.30);
 		}
 		return lblToString;
 	}
 
-	public void setLblToString(Label lblToString) {
+	public void setLblToString(TextArea lblToString) {
 		this.lblToString = lblToString;
+	}
+	
+	
+	public Label getLblFileIsLoad() {
+		if(lblFileIsLoad == null) {
+			lblFileIsLoad = new Label("No File");
+			lblFileIsLoad.setAlignment(Pos.CENTER_RIGHT);
+			lblFileIsLoad.setMaxSize(x*0.95,y/9);
+			lblFileIsLoad.setMinSize(x*0.95,y/9);
+			lblFileIsLoad.setId("txtFieldBlack");
+			lblFileIsLoad.setFont(Font.font(15));
+		}
+		return lblFileIsLoad;
+	}
+
+	public void setLblFileIsLoad(Label lblNbofChar) {
+		this.lblFileIsLoad = lblNbofChar;
 	}
 
 }

@@ -2,13 +2,17 @@ package view;
 
 import java.io.File;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -19,6 +23,7 @@ import utils.Serialisation;
 public class EncryptBp extends BorderPane{
 
 	private Button btnFileChooser;
+	private Label lblNbofChar;
 	private TextArea txtText;
 	private Button btnDone;
 	private Button btnBack;
@@ -29,16 +34,18 @@ public class EncryptBp extends BorderPane{
 	private double y = 600;
 	
 	private File file ;
+	private SteganoEncoder encoder;
+	private int nbCharFile;
 
 	public EncryptBp(Stage stage) {
 		this.stage=stage;
 		this.setId("FondNoir");
 
-		HBox hbbtn = new HBox();
-		hbbtn.setAlignment(Pos.CENTER);
-		hbbtn.getChildren().add(getBtnFileChooser());
-		hbbtn.setPadding(new Insets(5,0,0,0));
-		this.setTop(hbbtn);
+		VBox vbTop = new VBox();
+		vbTop.setAlignment(Pos.CENTER);
+		vbTop.getChildren().addAll(getBtnFileChooser(),getLblNbofChar());
+		vbTop.setPadding(new Insets(5,0,0,0));
+		this.setTop(vbTop);
 		
 		HBox hbtxt = new HBox();
 		hbtxt.setAlignment(Pos.BOTTOM_CENTER);
@@ -56,11 +63,20 @@ public class EncryptBp extends BorderPane{
 	public TextArea getTxtText() {
 		if(txtText == null) {
 			txtText = new TextArea();
-			//txtText.setAlignment(Pos.CENTER);
-			txtText.setMaxSize(x*0.80,y/9);
-			txtText.setMinSize(x*0.80,y/9);
-			txtText.setId("txtFieldBlack");
+			txtText.setMaxSize(x*0.95,y*0.30);
+			txtText.setMinSize(x*0.95,y*0.30);
+			txtText.setId("lblTitleLight");
 			txtText.setFont(Font.font(15));
+			
+			txtText.textProperty().addListener(new ChangeListener<String>() {
+		        @Override
+		        public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
+		            // this will run whenever text is changed
+		        	if(file != null) {
+		        		getLblNbofChar().setText( txtText.getLength() +" / "+ nbCharFile);
+		        	}
+		        }
+		    });
 		}
 		return txtText;
 	}
@@ -71,7 +87,7 @@ public class EncryptBp extends BorderPane{
 
 	public Button getBtnDone() {
 		if(btnDone == null) {
-			btnDone = new Button("Done");
+			btnDone = new Button("Encrypt");
 			btnDone.setAlignment(Pos.CENTER);
 			btnDone.setMaxSize(x*0.79,y/8);
 			btnDone.setMinSize(x*0.79,y/8);
@@ -90,7 +106,6 @@ public class EncryptBp extends BorderPane{
 				
 				if(fileSave!=null) {	
 					
-					SteganoEncoder encoder = new SteganoEncoder(Serialisation.loadImageFromFile(file));
 					Serialisation.saveImageInFile(encoder.encode(getTxtText().getText()),fileSave);
 	
 				}
@@ -118,6 +133,18 @@ public class EncryptBp extends BorderPane{
 				FileChooser chooser = new FileChooser();
 				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));
 				file = chooser.showOpenDialog(this.getScene().getWindow());
+				
+				if(file != null) {
+					encoder = new SteganoEncoder(Serialisation.loadImageFromFile(file));
+					nbCharFile = encoder.getMaxNumberOfChar();
+					
+					if(getTxtText().getLength() != 0) {
+						getLblNbofChar().setText( txtText.getLength() +" / "+ nbCharFile);
+					}else {
+						getLblNbofChar().setText("file Already to use");
+					}
+				}
+				
 				
 			});
 		}
@@ -148,6 +175,22 @@ public class EncryptBp extends BorderPane{
 
 	public void setBtnBack(Button btnBack) {
 		this.btnBack = btnBack;
+	}
+
+	public Label getLblNbofChar() {
+		if(lblNbofChar == null) {
+			lblNbofChar = new Label("No File");
+			lblNbofChar.setAlignment(Pos.CENTER_RIGHT);
+			lblNbofChar.setMaxSize(x*0.95,y/9);
+			lblNbofChar.setMinSize(x*0.95,y/9);
+			lblNbofChar.setId("txtFieldBlack");
+			lblNbofChar.setFont(Font.font(15));
+		}
+		return lblNbofChar;
+	}
+
+	public void setLblNbofChar(Label lblNbofChar) {
+		this.lblNbofChar = lblNbofChar;
 	}
 
 
