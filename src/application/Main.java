@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.SteganoDecoder;
-import model.SteganoDecoderVar;
 import model.SteganoEncoder;
 import utils.Serialisation;
 import view.HomeBp;
@@ -30,7 +29,10 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		//launch(args);
-		Serialisation.saveImageInFile(SteganoEncoder.encode(Serialisation.loadImageFromFile(new File("30x10.png")), "Yep"),new File("stegano30x10.png"));
-		System.out.println(SteganoDecoderVar.decode(Serialisation.loadImageFromFile(new File("stegano30x10.png"))));
+		SteganoEncoder encoder = new SteganoEncoder(Serialisation.loadImageFromFile(new File("30x10.png")));
+		Serialisation.saveImageInFile(encoder.encode("Yep"),new File("stegano30x10.png"));
+		
+		SteganoDecoder decoder = new SteganoDecoder(Serialisation.loadImageFromFile(new File("stegano30x10.png")));
+		System.out.println(decoder.decode());
 	}
 }

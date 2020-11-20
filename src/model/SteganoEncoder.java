@@ -5,10 +5,10 @@ import utils.BufferedImageUtil;
 
 
 /**
-* SteganoEncoder contient une méthode static permettant d'encoder un message sous forme
+* SteganoEncoder contient une méthode permettant d'encoder un message sous forme
 * de stegano dans une image.
-* <p>Elle contient également des méthodes privées permettant de convertir un String en BitSet et d'écrire
-* un BitSet dans une image.
+* <p>Elle contient également des méthodes privées permettant de convertir un String en boolean[] et d'écrire
+* un boolean[] dans une image.
 *
 * @author  Nicolas Gerard
 * @version 0.1
@@ -16,13 +16,24 @@ import utils.BufferedImageUtil;
 */
 public class SteganoEncoder {
 	
+	private BufferedImage bufferedImage;
+	
+	/**
+	* Constructeur permettant d'instancier un SteganoEncoder.
+	* @param bufferedImage L'image utilisée pour les différents traitements.
+	*/
+	public SteganoEncoder(BufferedImage bufferedImage) {
+		this.bufferedImage=bufferedImage;
+	}
+	
+	
 	/**
 	* Encode un message stegano dans la copie d'une image.
 	* @param bufferedImage L'image dont une copie sera encodée.
-	* @param msg le message à encoder
-	* @return Copie encodée de la bufferedImage donnée en argument
+	* @param msg le message à encoder.
+	* @return Copie encodée de la bufferedImage donnée en argument.
 	*/
-	public static BufferedImage encode(BufferedImage bufferedImage, String msg) {
+	public BufferedImage encode(String msg) {
 		String message = iSteganoConstante.encodedtag + msg.length() + iSteganoConstante.separator + msg; 
 		System.out.println(message);
 		
@@ -34,10 +45,10 @@ public class SteganoEncoder {
 	
 	/**
 	* Renvoie un boolean[] contenant le message sous forme binaire.
-	* @param message  le message à convertir
-	* @return Un boolean[] créé sur base du String
+	* @param message  le message à convertir.
+	* @return Un boolean[] créé sur base du String.
 	*/
-	private static boolean[] fromStringToBitSet(String message) {
+	private boolean[] fromStringToBitSet(String message) {
 		boolean[] bits = new boolean[message.length()*8];
 		
 		for(int i=0 ; i<message.length() ; i++) {
@@ -50,21 +61,20 @@ public class SteganoEncoder {
 	}
 	
 	/**
-	* Encode un boolean[] sur le LSB de l'alphachannel des pixels d'une BufferedImage
-	* @param outputImage Image encodée
-	* @param bits boolean[] a écrire
-	* @return Copie encodée de la bufferedImage donnée en argument
+	* Encode un boolean[] sur le LSB de l'alphachannel des pixels d'une BufferedImage.
+	* @param outputImage Image encodée.
+	* @param bits boolean[] à écrire.
+	* @return Copie encodée de la bufferedImage donnée en argument.
 	*/
-	private static BufferedImage writeBitSetIntoBufferedImage(BufferedImage outputImage, boolean[] bits) {
+	private BufferedImage writeBitSetIntoBufferedImage(BufferedImage outputImage, boolean[] bits) {
 
 		int pixel, pixOut, count = 0;;
 		loop: for(int i = 0; i < outputImage.getWidth(); i++) {
 			for(int j = 0; j < outputImage.getHeight(); j++) {
 				if(count < bits.length) {
-					System.out.println("encoder: "+i+":"+j);
 					pixel = outputImage.getRGB(i, j);
 					pixOut = (pixel & 0xFFFFFFFE) | (bits[count++] ? 1 : 0);
-					
+
 					outputImage.setRGB(i, j, pixOut);
 					
 				} else {
