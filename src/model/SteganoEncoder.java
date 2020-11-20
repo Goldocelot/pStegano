@@ -86,4 +86,12 @@ public class SteganoEncoder {
 		
 		return outputImage;
 	}
+	
+	/**
+	* Calcul la limite de caractère stockable dans l'image.
+	* @return Le nombre maximum de caractère stockable dans l'image.
+	*/
+	public int getMaxNumberOfChar() {
+		return (bufferedImage.getWidth()*bufferedImage.getHeight())/8;
+	}
 }

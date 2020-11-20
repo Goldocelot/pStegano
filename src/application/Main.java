@@ -1,12 +1,8 @@
 package application;
 	
-import java.io.File;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.SteganoDecoder;
-import model.SteganoEncoder;
-import utils.Serialisation;
 import view.HomeBp;
 
 
