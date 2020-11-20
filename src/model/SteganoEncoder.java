@@ -17,7 +17,7 @@ import utils.BufferedImageUtil;
 public class SteganoEncoder {
 	
 	private BufferedImage bufferedImage;
-	
+	private int headerLength;
 	/**
 	* Constructeur permettant d'instancier un SteganoEncoder.
 	* @param bufferedImage L'image utilisée pour les différents traitements.
@@ -35,6 +35,8 @@ public class SteganoEncoder {
 	*/
 	public BufferedImage encode(String msg) {
 		String message = iSteganoConstante.encodedtag + msg.length() + iSteganoConstante.separator + msg; 
+		headerLength = (iSteganoConstante.encodedtag + msg.length() + iSteganoConstante.separator).length();
+		
 		System.out.println(message);
 		
 		boolean[] bits = fromStringToBitSet(message);	
@@ -92,6 +94,6 @@ public class SteganoEncoder {
 	* @return Le nombre maximum de caractère stockable dans l'image.
 	*/
 	public int getMaxNumberOfChar() {
-		return (bufferedImage.getWidth()*bufferedImage.getHeight())/8;
+		return ((bufferedImage.getWidth()*bufferedImage.getHeight())/8)-headerLength*8;
 	}
 }
