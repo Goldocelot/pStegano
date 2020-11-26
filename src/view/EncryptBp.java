@@ -98,6 +98,7 @@ public class EncryptBp extends BorderPane{
 				//use file
 				if(file==null)return;
 				if(getTxtText().getText().equals("")) return;
+				if(encoder.getMaxNumberOfChar(txtText.getText())  < 0) return;
 				
 				FileChooser chooser = new FileChooser();
 				chooser.getExtensionFilters().addAll(new ExtensionFilter("png","*.png"));

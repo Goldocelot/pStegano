@@ -64,7 +64,7 @@ public class SteganoDecoder {
 
 		do {
 			lengthStr+=decodeOneChar(readBits(8));
-		}while((lengthStr.charAt(index++) != iSteganoConstante.separator)||positionX > bufferedImage.getWidth());
+		}while((lengthStr.charAt(index++) != iSteganoConstante.separator));
 		
 		
 		return Integer.valueOf(lengthStr.substring(0, lengthStr.length()-1));
