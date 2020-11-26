@@ -94,6 +94,6 @@ public class SteganoEncoder {
 	*/
 	public int getMaxNumberOfChar(String msg) {
 		int headerLength = (iSteganoConstante.encodedtag + msg.length() + iSteganoConstante.separator).length();
-		return ((bufferedImage.getWidth()*bufferedImage.getHeight())/8)-headerLength*8;
+		return ((bufferedImage.getWidth()*bufferedImage.getHeight())/8)-headerLength;
 	}
 }

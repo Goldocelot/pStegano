@@ -35,7 +35,6 @@ public class EncryptBp extends BorderPane{
 	
 	private File file ;
 	private SteganoEncoder encoder;
-	private int nbCharFile;
 
 	public EncryptBp(Stage stage) {
 		this.stage=stage;
@@ -73,7 +72,7 @@ public class EncryptBp extends BorderPane{
 		        public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
 		            // this will run whenever text is changed
 		        	if(file != null) {
-		        		getLblNbofChar().setText( txtText.getLength() +" / "+ nbCharFile);
+		        		getLblNbofChar().setText( txtText.getLength() +" / "+ encoder.getMaxNumberOfChar(txtText.getText()));
 		        	}
 		        }
 		    });
@@ -136,10 +135,9 @@ public class EncryptBp extends BorderPane{
 				
 				if(file != null) {
 					encoder = new SteganoEncoder(Serialisation.loadImageFromFile(file));
-					nbCharFile = encoder.getMaxNumberOfChar();
 					
 					if(getTxtText().getLength() != 0) {
-						getLblNbofChar().setText( txtText.getLength() +" / "+ nbCharFile);
+						getLblNbofChar().setText( txtText.getLength() +" / "+ encoder.getMaxNumberOfChar(txtText.getText()));
 					}else {
 						getLblNbofChar().setText("file Already to use");
 					}
